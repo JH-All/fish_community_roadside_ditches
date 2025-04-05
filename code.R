@@ -98,7 +98,7 @@ summary_env <- env_df %>%
 
 write_xlsx(summary_env, "Environmental_Variables_Summary.xlsx")
 
-# PCA & Figure 3 ---------------------
+# PCA & Figure S1 ---------------------
 pca.p <- PCA(X = env_df[,c(1:7)],
              scale.unit = TRUE, graph = FALSE)
 
