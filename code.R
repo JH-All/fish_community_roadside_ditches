@@ -111,7 +111,7 @@ summary(pca.p)
 
 
 
-fig_3 = fviz_pca_biplot(pca.p,
+fig_s1 = fviz_pca_biplot(pca.p,
                            geom.ind = "point", 
                            fill.ind = env_df$rain, 
                            col.ind = "black",
@@ -143,9 +143,9 @@ fig_3 = fviz_pca_biplot(pca.p,
     legend.key = element_blank()             
   )
 
-fig_3
+fig_s1
 
-ggsave("Figure 3.jpg", fig_3)
+ggsave("Figure S1.jpg", fig_s1)
 
 # Table 2 -------------------
 abundancia_total <- data %>%
@@ -153,7 +153,7 @@ abundancia_total <- data %>%
   summarise(across(18:34, sum))
 rowSums(abundancia_total[,2:18])
 
-# iNEXT & Figure 5 ------------------
+# iNEXT & Figure 4 ------------------
 datlist <- list()
 com_inext <- community
 
@@ -174,7 +174,7 @@ result <- iNEXT(datlist,
                 se = TRUE, 
                 nboot = 999)
 
-fig_5 = ggiNEXT(result, type = 1)+
+fig_4 = ggiNEXT(result, type = 1)+
   scale_colour_manual(values = c("WP" = "#1f78b4", 
                                  "DP" = "#33a02c")) +
   scale_fill_manual(values = c("WP" = "#1f78b4", 
@@ -190,9 +190,9 @@ fig_5 = ggiNEXT(result, type = 1)+
     legend.box.background = element_blank()
   ) 
 
-fig_5
+fig_4
 
-ggsave("Figure 5.jpg", fig_5)
+ggsave("Figure 4.jpg", fig_4)
 
 # PERMANOVA & PERMDISP -------------
 data$rain <- as.factor(data$rain)
@@ -206,7 +206,7 @@ print(resultado_permanova)
 dispersao <- betadisper(distancia, data$rain)
 anova(dispersao)  
 
-# NMDS & Figure 6 ------------------
+# NMDS & Figure 5 ------------------
 nmds_result <- metaMDS(community, distance = "bray", k = 2, trymax = 100)
 nmds_scores <- as.data.frame(scores(nmds_result, display = "sites"))
 nmds_scores$Periodo <- data$rain
@@ -265,9 +265,9 @@ nmds_sp
 nmds_complete = plot_grid(nmds_plot, nmds_sp, nrow = 1, labels = "AUTO")
 nmds_complete
 
-ggsave("Figure 6.jpg", nmds_complete, width = 12)
+ggsave("Figure 5.jpg", nmds_complete, width = 12)
 
-# RDA & Figure 7 -----------------
+# RDA & Figure 6 -----------------
 abundancia_hellinger <- decostand(community, method = "hellinger")
 
 env$Highway_dist = data$`highway_distance (m)`
@@ -328,9 +328,9 @@ rda_fig = biplot +
 
 rda_fig
 
-ggsave("Figure 7.jpg", rda_fig)
+ggsave("Figure 6.jpg", rda_fig)
 
-# Mantel & Figure 8 -------------------
+# Mantel & Figure S2 -------------------
 spatial = read_excel("spatial.xlsx")
 spatial <- spatial[, c("Lat", "Long")]
 spatial <- as.matrix(spatial)
@@ -347,7 +347,7 @@ mantel(Dist.km, dissimil.com)
 matrix.dist <- data.frame(x = melt(as.matrix(Dist.km))$value, 
                           y = melt(as.matrix(dissimil.com))$value)
 
-fig_8 = ggplot(matrix.dist , aes(x, y)) +
+fig_s2 = ggplot(matrix.dist , aes(x, y)) +
   geom_point(size = 6, shape = 21, fill = "black", alpha = 0.4) +
   labs(x = "Geographical distance (km)", 
        y = "Dissimilarity (Bray-Curtis)") +
@@ -361,4 +361,4 @@ fig_8 = ggplot(matrix.dist , aes(x, y)) +
 
 fig_8
 
-ggsave("Figure 8.jpg", fig_8)
+ggsave("Figure S2.jpg", fig_s2)
